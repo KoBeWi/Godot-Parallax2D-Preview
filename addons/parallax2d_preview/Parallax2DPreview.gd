@@ -10,8 +10,8 @@ var preview_node: Node
 func _enter_tree() -> void:
 	preview_button = MenuButton.new()
 	preview_button.text = "Parallax2D Preview"
+	preview_button.icon = preload("res://addons/parallax2d_preview/Icon.png")
 	preview_button.hide()
-	preview_button.theme_changed.connect(update_preview_button_theme)
 	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, preview_button)
 	
 	var menu := preview_button.get_popup()
@@ -28,11 +28,9 @@ func _enter_tree() -> void:
 	EditorInterface.get_selection().selection_changed.connect(update_button)
 
 func _exit_tree() -> void:
+	on_menu_selected(PREVIEW_DISABLED)
 	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, preview_button)
 	preview_button.queue_free()
-
-func update_preview_button_theme():
-	preview_button.icon = preview_button.get_theme_icon(&"Parallax2D", &"EditorIcons")
 
 func update_button():
 	var make_visible: bool
@@ -67,7 +65,7 @@ func on_menu_selected(id: int):
 				return
 			
 			var accurate: bool = preview_node.accurate_preview
-			preview_node.queue_free()
+			preview_node.free()
 			make_node(accurate)
 	
 	var menu := preview_button.get_popup()

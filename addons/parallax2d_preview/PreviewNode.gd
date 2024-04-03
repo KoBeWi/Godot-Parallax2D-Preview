@@ -18,8 +18,12 @@ func _notification(what: int) -> void:
 					ProjectSettings.get_setting_with_override(&"display/window/size/viewport_width"),
 					ProjectSettings.get_setting_with_override(&"display/window/size/viewport_height")
 				)
+				
+				if parallax_list.is_empty():
+					push_warning("No Parallax2D nodes found in the current scene.")
 			
 			update_preview()
+			_physics_process.call_deferred(0)
 		
 		NOTIFICATION_EXIT_TREE:
 			for parallax in parallax_list:
@@ -52,8 +56,9 @@ func update_preview(new: bool = accurate_preview):
 		if not line_helper:
 			line_helper = Node2D.new()
 			line_helper.z_index = 4096
+			line_helper.top_level = true
 			line_helper.draw.connect(draw_outline)
-			get_viewport().add_child(line_helper)
+			get_tree().edited_scene_root.add_child(line_helper)
 	else:
 		if line_helper:
 			line_helper.queue_free()
