@@ -23,7 +23,7 @@ func _notification(what: int) -> void:
 					push_warning("No Parallax2D nodes found in the current scene.")
 			
 			update_preview()
-			_physics_process.call_deferred(0)
+			_process.call_deferred(0)
 		
 		NOTIFICATION_EXIT_TREE:
 			for parallax in parallax_list:
@@ -66,7 +66,7 @@ func update_preview(new: bool = accurate_preview):
 	
 	last_viewport_pos = Vector2.INF
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	var viewport_pos := get_viewport().global_canvas_transform.origin
 	
 	if viewport_pos != last_viewport_pos:
